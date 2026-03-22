@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/icon";
 
-const SLIDES_COUNT = 8;
+const SLIDES_COUNT = 9;
 
 const COLORS = [
   { id: "pink", label: "Нежно-розовый", hex: "#F2A8B8", votes: 0 },
@@ -104,6 +104,7 @@ export default function Index() {
           {current === 5 && <Slide5 />}
           {current === 6 && <Slide6 />}
           {current === 7 && <Slide7 />}
+          {current === 8 && <Slide8 />}
         </div>
       </div>
 
@@ -474,6 +475,60 @@ function Slide7() {
   );
 }
 
+function Slide8() {
+  const sources = [
+    {
+      author: "Максимова М. В.",
+      title: "Поделки из проволоки. Пошаговые мастер-классы для начинающих",
+      source: "М.: Эксмо, 2018. — 128 с.",
+    },
+    {
+      author: "",
+      title: "История синельной проволоки: от чистки трубок до декоративного искусства",
+      source: "Журнал «Школа рукоделия», №3, 2021",
+    },
+    {
+      author: "Петрова Н. А.",
+      title: "Цветы из проволоки своими руками: тюльпаны, розы, пионы",
+      source: "СПб.: Питер, 2020. — 96 с.",
+    },
+    {
+      author: "",
+      title: "Техники работы с синельной проволокой для детей и взрослых",
+      source: "livemaster.ru — Ярмарка мастеров, 2023",
+    },
+    {
+      author: "Смирнова О. Ю.",
+      title: "Декоративно-прикладное искусство в школе: проектная деятельность",
+      source: "М.: Просвещение, 2019. — 64 с.",
+    },
+    {
+      author: "",
+      title: "Pipe cleaner flowers: step-by-step guide",
+      source: "craftprojectideas.com, 2022",
+    },
+  ];
+
+  return (
+    <div className="slide slide-biblio">
+      <div className="slide-tag">08 — Источники</div>
+      <h2 className="slide-heading">Библиографический список</h2>
+      <div className="biblio-list">
+        {sources.map((s, i) => (
+          <div key={i} className="biblio-item" style={{ "--delay": `${0.08 + i * 0.08}s` } as React.CSSProperties}>
+            <span className="biblio-num">{i + 1}</span>
+            <div className="biblio-content">
+              {s.author && <span className="biblio-author">{s.author}</span>}
+              <span className="biblio-title">{s.title}</span>
+              <span className="biblio-source">{s.source}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const presStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Golos+Text:wght@300;400;500&display=swap');
 
@@ -784,4 +839,24 @@ const presStyles = `
   .concl-author { display: flex; flex-direction: column; gap: 0.15rem; align-self: center; text-align: center; }
   .concl-author-name { font-family: 'Cormorant', serif; font-size: 1.3rem; font-weight: 400; color: #2D2020; }
   .concl-author-class { font-size: 0.78rem; color: #8FAF8A; font-weight: 500; }
+
+  /* SLIDE 8 — Bibliography */
+  .slide-biblio { max-width: 760px; }
+  .biblio-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+  .biblio-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: white; border-radius: 14px; padding: 1rem 1.2rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    animation: fadeUp 0.4s ease calc(var(--delay)) both;
+    transition: box-shadow 0.2s;
+  }
+  .biblio-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+  .biblio-num {
+    font-family: 'Cormorant', serif; font-size: 1.1rem; font-weight: 600;
+    color: #C49090; min-width: 22px; padding-top: 1px;
+  }
+  .biblio-content { display: flex; flex-direction: column; gap: 0.15rem; }
+  .biblio-author { font-size: 0.8rem; color: rgba(0,0,0,0.4); }
+  .biblio-title { font-size: 0.9rem; color: #2D2020; line-height: 1.5; }
+  .biblio-source { font-size: 0.78rem; color: #8FAF8A; font-style: italic; }
 `;
