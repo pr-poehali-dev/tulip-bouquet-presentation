@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/icon";
 
-const SLIDES_COUNT = 5;
+const SLIDES_COUNT = 6;
 
 const COLORS = [
   { id: "pink", label: "Нежно-розовый", hex: "#F2A8B8", votes: 0 },
@@ -101,6 +101,7 @@ export default function Index() {
               onVoteBouquet={voteForBouquet}
             />
           )}
+          {current === 5 && <Slide5 />}
         </div>
       </div>
 
@@ -304,6 +305,73 @@ function Slide4({ colors, selectedColor, colorVotes, votedColor, totalColorVotes
   );
 }
 
+const GALLERY_PHOTOS = [
+  {
+    id: "mono",
+    url: "https://cdn.poehali.dev/projects/657b3489-0d3f-4166-8d0f-139f9c501db6/files/f0a7a7d9-2efc-4220-a506-fe288976a3c4.jpg",
+    title: "Монохромный",
+    desc: "Молочно-белые тюльпаны — классика без лишних слов",
+    tag: "Нежный",
+  },
+  {
+    id: "gradient",
+    url: "https://cdn.poehali.dev/projects/657b3489-0d3f-4166-8d0f-139f9c501db6/files/5f8922c3-5e6e-4543-9325-c5d48d2fcd20.jpg",
+    title: "Градиент",
+    desc: "Переход от пастельного к насыщенной розе",
+    tag: "Романтичный",
+  },
+  {
+    id: "nature",
+    url: "https://cdn.poehali.dev/projects/657b3489-0d3f-4166-8d0f-139f9c501db6/files/4684eccf-8eef-45fd-8e80-a1f2ad1e6b9e.jpg",
+    title: "Природный",
+    desc: "Шалфей, персиковый, лаванда — как в летнем саду",
+    tag: "Свежий",
+  },
+];
+
+function Slide5() {
+  const [active, setActive] = useState(0);
+
+  return (
+    <div className="slide slide-gallery">
+      <div className="slide-tag">05 — Фотогалерея</div>
+      <h2 className="slide-heading">Возможные букеты</h2>
+      <div className="gallery-layout">
+        <div className="gallery-main">
+          <div className="gallery-img-wrap">
+            <img
+              key={active}
+              src={GALLERY_PHOTOS[active].url}
+              alt={GALLERY_PHOTOS[active].title}
+              className="gallery-img"
+            />
+            <div className="gallery-tag-badge">{GALLERY_PHOTOS[active].tag}</div>
+          </div>
+          <div className="gallery-caption">
+            <span className="gallery-title">{GALLERY_PHOTOS[active].title}</span>
+            <span className="gallery-desc">{GALLERY_PHOTOS[active].desc}</span>
+          </div>
+        </div>
+        <div className="gallery-thumbs">
+          {GALLERY_PHOTOS.map((p, i) => (
+            <button
+              key={p.id}
+              className={`gallery-thumb ${i === active ? "gallery-thumb-active" : ""}`}
+              onClick={() => setActive(i)}
+            >
+              <img src={p.url} alt={p.title} />
+              <div className="thumb-overlay">
+                <span>{p.title}</span>
+              </div>
+            </button>
+          ))}
+          <div className="gallery-hint">← Нажми на фото для просмотра</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const presStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Golos+Text:wght@300;400;500&display=swap');
 
@@ -486,4 +554,48 @@ const presStyles = `
   .vote-bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,0.06); }
   .vote-bar { height: 100%; background: linear-gradient(to right, #F2A8B8, #C49090); transition: width 0.5s ease; }
   .vote-pct-label { position: absolute; right: 0.8rem; top: -1.4rem; font-size: 0.72rem; font-weight: 600; color: #C49090; }
+
+  /* SLIDE 5 — Gallery */
+  .slide-gallery { max-width: 860px; }
+  .gallery-layout { display: grid; grid-template-columns: 1fr 320px; gap: 1.6rem; align-items: start; }
+  @media (max-width: 700px) { .gallery-layout { grid-template-columns: 1fr; } }
+
+  .gallery-main { display: flex; flex-direction: column; gap: 1rem; }
+  .gallery-img-wrap {
+    position: relative; border-radius: 20px; overflow: hidden;
+    aspect-ratio: 4/3; background: #f0ebe5;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  }
+  .gallery-img {
+    width: 100%; height: 100%; object-fit: cover;
+    animation: galleryFade 0.4s ease both;
+  }
+  @keyframes galleryFade { from { opacity:0; transform:scale(1.03); } to { opacity:1; transform:scale(1); } }
+  .gallery-tag-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(8px);
+    border-radius: 100px; padding: 0.3rem 0.9rem;
+    font-size: 0.75rem; font-weight: 500; color: #C49090;
+    letter-spacing: 0.05em;
+  }
+  .gallery-caption { display: flex; flex-direction: column; gap: 0.25rem; padding: 0 0.2rem; }
+  .gallery-title { font-family: 'Cormorant', serif; font-size: 1.3rem; font-weight: 400; color: #2D2020; }
+  .gallery-desc { font-size: 0.85rem; color: rgba(0,0,0,0.5); line-height: 1.5; }
+
+  .gallery-thumbs { display: flex; flex-direction: column; gap: 0.7rem; }
+  .gallery-thumb {
+    position: relative; border-radius: 12px; overflow: hidden;
+    aspect-ratio: 4/3; cursor: pointer; border: 2px solid transparent;
+    transition: all 0.2s; padding: 0;
+  }
+  .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gallery-thumb:hover { transform: translateX(-3px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .gallery-thumb-active { border-color: #C49090; box-shadow: 0 0 0 3px rgba(196,144,144,0.25); }
+  .thumb-overlay {
+    position: absolute; inset: 0; display: flex; align-items: flex-end;
+    padding: 0.6rem 0.8rem;
+    background: linear-gradient(to top, rgba(45,32,32,0.55) 0%, transparent 60%);
+  }
+  .thumb-overlay span { font-size: 0.8rem; font-weight: 500; color: white; }
+  .gallery-hint { font-size: 0.72rem; color: rgba(0,0,0,0.3); text-align: center; padding-top: 0.3rem; }
 `;
