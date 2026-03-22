@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/icon";
 
-const SLIDES_COUNT = 6;
+const SLIDES_COUNT = 8;
 
 const COLORS = [
   { id: "pink", label: "Нежно-розовый", hex: "#F2A8B8", votes: 0 },
@@ -102,6 +102,8 @@ export default function Index() {
             />
           )}
           {current === 5 && <Slide5 />}
+          {current === 6 && <Slide6 />}
+          {current === 7 && <Slide7 />}
         </div>
       </div>
 
@@ -372,6 +374,106 @@ function Slide5() {
   );
 }
 
+const SURVEY_DATA = [
+  { question: "Знали ли вы о синельной проволоке как материале для творчества?", yes: 8, no: 12 },
+  { question: "Хотели бы попробовать сделать букет из синельной проволоки?", yes: 16, no: 4 },
+  { question: "Считаете ли вы такой букет достойным подарком?", yes: 18, no: 2 },
+  { question: "Предпочли бы живые цветы или изделие ручной работы?", yes: 7, no: 13, labelYes: "Живые", labelNo: "Ручная работа" },
+];
+
+function Slide6() {
+  const total = 20;
+  return (
+    <div className="slide slide-survey">
+      <div className="slide-tag">06 — Опрос</div>
+      <h2 className="slide-heading">Мнение одноклассников</h2>
+      <div className="survey-meta">
+        <div className="survey-badge">
+          <span className="survey-num">20</span>
+          <span className="survey-label">учащихся опрошено</span>
+        </div>
+        <div className="survey-badge">
+          <span className="survey-num">9Б</span>
+          <span className="survey-label">класс</span>
+        </div>
+        <div className="survey-badge">
+          <span className="survey-num">4</span>
+          <span className="survey-label">вопроса</span>
+        </div>
+      </div>
+      <div className="survey-list">
+        {SURVEY_DATA.map((item, i) => {
+          const yesPct = Math.round((item.yes / total) * 100);
+          const noPct = 100 - yesPct;
+          return (
+            <div key={i} className="survey-item" style={{ "--delay": `${0.1 + i * 0.1}s` } as React.CSSProperties}>
+              <div className="survey-q">
+                <span className="survey-qnum">Q{i + 1}</span>
+                <span className="survey-qtext">{item.question}</span>
+              </div>
+              <div className="survey-bar-row">
+                <span className="survey-bar-label yes-label">{item.labelYes ?? "Да"} — {item.yes}</span>
+                <div className="survey-bar-track">
+                  <div className="survey-bar-fill yes-fill" style={{ width: `${yesPct}%` }}>
+                    <span className="bar-pct">{yesPct}%</span>
+                  </div>
+                </div>
+              </div>
+              <div className="survey-bar-row">
+                <span className="survey-bar-label no-label">{item.labelNo ?? "Нет"} — {item.no}</span>
+                <div className="survey-bar-track">
+                  <div className="survey-bar-fill no-fill" style={{ width: `${noPct}%` }}>
+                    <span className="bar-pct">{noPct}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Slide7() {
+  return (
+    <div className="slide slide-conclusion">
+      <div className="slide-tag">07 — Заключение</div>
+      <h2 className="slide-heading">Что я узнала и сделала</h2>
+      <div className="conclusion-layout">
+        <div className="conclusion-results">
+          <div className="concl-label">Результаты работы</div>
+          {[
+            { icon: "📚", text: "Изучила историю синельной проволоки и её применение в творчестве" },
+            { icon: "🌷", text: "Освоила технику изготовления тюльпанов — от лепестка до стебля" },
+            { icon: "🎨", text: "Разработала 4 варианта дизайна букета с разными цветовыми решениями" },
+            { icon: "📊", text: "Провела опрос среди 20 учащихся — 80% хотят попробовать технику" },
+            { icon: "🏆", text: "Создала авторский букет и представила его на школьной выставке" },
+          ].map((r, i) => (
+            <div key={i} className="concl-item" style={{ "--delay": `${0.1 + i * 0.1}s` } as React.CSSProperties}>
+              <span className="concl-icon">{r.icon}</span>
+              <span>{r.text}</span>
+            </div>
+          ))}
+        </div>
+        <div className="conclusion-right">
+          <div className="concl-quote-block">
+            <div className="concl-label">Вывод</div>
+            <p className="concl-quote">
+              Синельная проволока — доступный и выразительный материал. Тюльпаны из неё получаются живыми, тёплыми и долговечными. Проект доказал: рукоделие — это не просто хобби, а способ выразить себя и порадовать других.
+            </p>
+          </div>
+          <div className="concl-tulip">🌷</div>
+          <div className="concl-author">
+            <span className="concl-author-name">Романова Дарья</span>
+            <span className="concl-author-class">9 «Б» класс · 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const presStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Golos+Text:wght@300;400;500&display=swap');
 
@@ -598,4 +700,88 @@ const presStyles = `
   }
   .thumb-overlay span { font-size: 0.8rem; font-weight: 500; color: white; }
   .gallery-hint { font-size: 0.72rem; color: rgba(0,0,0,0.3); text-align: center; padding-top: 0.3rem; }
+
+  /* SLIDE 6 — Survey */
+  .slide-survey { max-width: 800px; }
+  .survey-meta {
+    display: flex; gap: 1rem; margin-bottom: 1.6rem; flex-wrap: wrap;
+  }
+  .survey-badge {
+    display: flex; flex-direction: column; align-items: center;
+    background: white; border-radius: 14px; padding: 0.7rem 1.4rem;
+    border: 1px solid rgba(0,0,0,0.06); gap: 0.1rem;
+  }
+  .survey-num {
+    font-family: 'Cormorant', serif; font-size: 2rem; font-weight: 600;
+    color: #C49090; line-height: 1;
+  }
+  .survey-label { font-size: 0.72rem; color: rgba(0,0,0,0.4); letter-spacing: 0.05em; }
+  .survey-list { display: flex; flex-direction: column; gap: 1rem; }
+  .survey-item {
+    background: white; border-radius: 14px; padding: 1rem 1.2rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    animation: fadeUp 0.4s ease calc(var(--delay)) both;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .survey-q { display: flex; align-items: flex-start; gap: 0.6rem; }
+  .survey-qnum {
+    font-family: 'Cormorant', serif; font-size: 0.95rem; font-weight: 600;
+    color: #C49090; min-width: 22px; padding-top: 1px;
+  }
+  .survey-qtext { font-size: 0.88rem; color: #2D2020; line-height: 1.5; }
+  .survey-bar-row { display: flex; align-items: center; gap: 0.7rem; }
+  .survey-bar-label { font-size: 0.75rem; color: rgba(0,0,0,0.5); min-width: 90px; white-space: nowrap; }
+  .yes-label { color: #8FAF8A; }
+  .no-label { color: #C49090; }
+  .survey-bar-track {
+    flex: 1; height: 10px; background: rgba(0,0,0,0.06);
+    border-radius: 100px; overflow: hidden;
+  }
+  .survey-bar-fill {
+    height: 100%; border-radius: 100px;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 6px;
+    animation: barGrow 0.8s cubic-bezier(0.25,0.46,0.45,0.94) both;
+  }
+  @keyframes barGrow { from { width: 0 !important; } }
+  .yes-fill { background: linear-gradient(to right, #a8c9a3, #8FAF8A); }
+  .no-fill { background: linear-gradient(to right, #e8c5c5, #C49090); }
+  .bar-pct { font-size: 0.65rem; font-weight: 600; color: white; white-space: nowrap; }
+
+  /* SLIDE 7 — Conclusion */
+  .slide-conclusion { max-width: 860px; }
+  .conclusion-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 620px) { .conclusion-layout { grid-template-columns: 1fr; } }
+  .conclusion-results { display: flex; flex-direction: column; gap: 0.7rem; }
+  .concl-label {
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(0,0,0,0.35); margin-bottom: 0.4rem;
+  }
+  .concl-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    font-size: 0.88rem; color: #3a2a2a; line-height: 1.5;
+    background: white; border-radius: 12px; padding: 0.7rem 0.9rem;
+    border: 1px solid rgba(0,0,0,0.05);
+    animation: fadeUp 0.4s ease calc(var(--delay)) both;
+  }
+  .concl-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .conclusion-right {
+    display: flex; flex-direction: column; gap: 1.4rem; align-items: flex-start;
+  }
+  .concl-quote-block {
+    background: linear-gradient(135deg, rgba(242,168,184,0.15) 0%, rgba(143,175,138,0.12) 100%);
+    border-radius: 16px; padding: 1.4rem;
+    border: 1px solid rgba(196,144,144,0.2);
+  }
+  .concl-quote {
+    font-family: 'Cormorant', serif; font-size: 1.08rem; font-style: italic;
+    color: #2D2020; line-height: 1.7; margin: 0;
+  }
+  .concl-tulip {
+    font-size: 2.8rem; animation: floatIcon 3s ease-in-out infinite;
+    align-self: center;
+  }
+  .concl-author { display: flex; flex-direction: column; gap: 0.15rem; align-self: center; text-align: center; }
+  .concl-author-name { font-family: 'Cormorant', serif; font-size: 1.3rem; font-weight: 400; color: #2D2020; }
+  .concl-author-class { font-size: 0.78rem; color: #8FAF8A; font-weight: 500; }
 `;
